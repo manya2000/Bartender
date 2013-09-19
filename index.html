@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Project1</title>
 <meta name="generator" content="NSB/AppStudio 3.1.7.1$hmqw" />
-<meta name="date" content="2013-09-16 11:27:59.862653" />
+<meta name="date" content="2013-09-18 20:53:05.966427" />
 <meta name="version" content="1.0.0" />
 <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=0.6667, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="YES" />
@@ -49,6 +49,8 @@
 #List1 {position:absolute; left:0px; top:0px; width:"100%"; height:"auto" }
 #List1 {left:0px; top:42px;}
 #HeaderBar2 {position: absolute; width:100%; height:40px; left:0px; top:0px;}
+#Button4 {position:absolute; left:50%; right:auto; top:75%; bottom:auto; height:25%; width:50%}
+#Button4Copy {position:absolute; left:0%; right:auto; top:0%; bottom:auto; height:50%; width:75%}
 body * {font-family:helvetica}
 </style>
 </head>
@@ -75,6 +77,10 @@ body * {font-family:helvetica}
 <script>FooterBar_jqm('FooterBar1', 'One, Two', '12', 'helvetica', 'normal', 'bold', 'a', '', 'none', '0', ' ')</script>
 <script>List_jqm("List1", "ol", "none", "c", "b", "Apples, Oranges, Test", "", "N,N", "style=", 'class=" "', "100%", false, false)</script>
 <script>HeaderBar_jqm("HeaderBar2", "Tabs", "Back", "arrow-l", "Add", "plus", " data-theme=b style='' class=' ' ")</script>
+</form>
+<form id="Form3" action="" method="GET" onsubmit="return false;" style="display:none; height:100%; position:absolute; top:0px; left:0px; width:100%; ">
+<div id="Button4" data-role='button' data-inline=true data-theme=c data-icon=false data-iconpos=none data-mini=true class=" " style="margin:0px; overflow:visible; font-size:12px; font-family:helvetica; font-style:normal; font-weight:bold; color:; background-color:; ">Button</div>
+<div id="Button4Copy" data-role='button' data-inline=true data-theme=c data-icon=false data-iconpos=none data-mini=true class=" " style="margin:0px; overflow:visible; font-size:12px; font-family:helvetica; font-style:normal; font-weight:bold; color:; background-color:; ">Button</div>
 </form>
 </div>
 <script>
@@ -132,6 +138,14 @@ Image1.onclick = function() { savethefunction_rvar="";
   doform2();
 return savethefunction_rvar; }
 
+Button2Copy.onclick = function() { savethefunction_rvar="";
+  doform3();
+return savethefunction_rvar; }
+function doform3() { savethefunction_rvar="";
+  Form3.show();
+  Form1.hide();
+return savethefunction_rvar; }
+
 window.addEventListener('load', function() {
   Form2.style.display = 'block';
   NSB_addDisableProperty(Button3);
@@ -168,15 +182,35 @@ HeaderBar2.onclick = function(button) { savethefunction_rvar="";
   }
 return savethefunction_rvar; }
 
-List1.onclick = function(choice) { savethefunction_rvar="";
-  _msgbox_confirm("this "  +  choice);
-  choice=0;
- //MsgBox "test"
+List1.onclick = function(i) { savethefunction_rvar="";
+  if(TypeName(i)=="object" )  { return savethefunction_rvar; }
+  _msgbox_confirm("Menu item chosen: "  +  i  +  " "  +  List1.getItem(i));
 return savethefunction_rvar; }
-List1.ontouchstart = function(c) { savethefunction_rvar="";
-   _msgbox_confirm(c);
+List1.ontouchstart = function(i) { savethefunction_rvar="";
+   if(TypeName(i)=="object" )  { return savethefunction_rvar; }
+  _msgbox_confirm("Menu item chosen: "  +  i  +  " "  +  List1.getItem(i));
 return savethefunction_rvar; }
 
+
+window.addEventListener('load', function() {
+  Form3.style.display = 'block';
+  NSB_addDisableProperty(Button4);
+  NSB.addProperties(Button4);
+  NSB_addDisableProperty(Button4Copy);
+  NSB.addProperties(Button4Copy);
+  Form3.style.display = 'none';
+}, false);
+if(!''){
+  Form3.onsubmit=function(event){
+    window.event.cancelBubble=true;
+    window.event.returnValue=false}};
+NSB.addProperties(Form3);
+
+Button4.onclick = function() { savethefunction_rvar="";
+     Form1.show();
+  Form3.hide();
+
+return savethefunction_rvar; }
 
 
 window.addEventListener('load', function() {
