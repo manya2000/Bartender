@@ -9,7 +9,7 @@ var savethefunction_rvar=null;
 //vbScript GetRef function: GetRef(sub name)
 function getRef(str) {
     if (typeof(str)=='string') {
-        return eval(str);
+		return window[str];
     } else {
         return str;
     }
@@ -1166,80 +1166,139 @@ function Hour(tm) {
 
 //vbScript ERASE
 function _erase(varr) {
-//clears up to 7 multi-dimensioned arrays and truncates at 8
-	arylist = split(varr,','); //allow multiple arrays
+	//clears up to 8 dimensioned arrays
+	//would be helpful to have array dimensions as inputs  "arr(3,2)"
+	//since javascript doesn't support multi-dimensional arrays so
+	//you can't get the size of the array
+	var arylist = split(varr,','); //allow multiple arrays
+	var maxArySize=0;
 	for(zz=0;zz<arylist.length;++zz) {
-		try {
-		arr=arylist[zz];
-		var _thisx=0, _thisz=0, _thisy=[];
-		do {
-			var _thisay='';
-			for(_thisi=0; _thisi<_thisx; ++_thisi) {_thisay+='[0]';}
+		var ary=window[arylist[zz]];
+		if (ary.length > maxArySize) { maxArySize=ary.length; }
+		if (Object.prototype.toString.call(ary)=='[object Array]') {
+			for (aa=0;aa<maxArySize;++aa) {
 			try {
-				_thisal=eval(arr+_thisay+'.length;');
-				if (_thisal>1 && _thisal != 'undefined' && eval('IsArray('+arr+_thisay+');')) {
-					_thisy[_thisx]=_thisal; ++_thisx; _thisz=1;
-				} else {_thisz=0; _thisal=0;}
-			} catch(_thise) {_thisz=0; _thisal=0; --_thisx;}
-		} while(_thisz==1 && _thisx<7);
-		if (_thisx==1 && _thisay=='[0]') { _thisx=0; }
-		//fix [0][0] issue
-		while(!_thisy[_thisx] && _thisx > 0) {
-			_thisx -= 1;
-		}
-		if (_thisx>=0) {
-			for(_thisa=0; _thisa<_thisy[0]; ++_thisa) {
-				if (_thisx>=1) {
-					for(_thisb=0; _thisb<_thisy[1]; ++_thisb) {
-						if (_thisx>=2) {
-							for(_thisc=0; _thisc<_thisy[2]; ++_thisc) {
-								if (_thisx>=3) {
-									for(_thisd=0; _thisd<_thisy[3]; ++_thisd) {
-										if(_thisx>=4) {
-											for(_thise=0; _thise<_thisy[4]; ++_thise) {
-												if(_thisx>=5) {
-													for(_thisf=0; _thisf<_thisy[5]; ++_thisf) {
-														if(_thisx>=6) {
-															for(_thisg=0; _thisg<_thisy[6]; ++_thisg) {
-																if(_thisx>=7) {
-																	//for(_thish=0; _thish<_thisy[7]; ++_thish) {
-																		//at this point, delete array since array is greater than 7 deep
-																		for(var i=0; i<eval(arr+'.length;'); i++) {
-																			eval(arr+'['+_thisa+']['+_thisb+']['+_thisc+']['+_thisd+']['+_thise+']['+_thisf+']['+_thisg+']="";');
-																		}
-																	//}
-																} else {
-																	eval(arr+'['+_thisa+']['+_thisb+']['+_thisc+']['+_thisd+']['+_thise+']['+_thisf+']['+_thisg+']="";');
-																}
-															}
-														} else {
-															eval(arr+'['+_thisa+']['+_thisb+']['+_thisc+']['+_thisd+']['+_thise+']['+_thisf+']="";');
-														}
-													}
-												} else {
-													eval(arr+'['+_thisa+']['+_thisb+']['+_thisc+']['+_thisd+']['+_thise+']="";');
-												}
-											}
-										} else {
-											eval(arr+'['+_thisa+']['+_thisb+']['+_thisc+']['+_thisd+']="";');
-										}
-									}
-								} else {
-									eval(arr+'['+_thisa+']['+_thisb+']['+_thisc+']="";');
-								}
-							}
+				if (ary[aa] && !(ary[0] instanceof Array)) {
+					val=ary[aa];
+					if (val===null || isNaN(val) || val=='') {
+						ary[aa]='';
+					} else {
+						ary[aa]=0;
+					}
+				}
+				for (bb=0;bb<maxArySize;++bb) {
+				try {
+					if (ary[aa][bb] && !(ary[0][0] instanceof Array)) {
+						val=ary[aa][bb];
+						if (val===null || isNaN(val) || val=='') {
+							ary[aa][bb]='';
 						} else {
-							eval(arr+'['+_thisa+']['+_thisb+']="";');
+							ary[aa][bb]=0;
 						}
 					}
-				} else {
-					eval(arr+'['+_thisa+']="";');
+					for (cc=0;cc<maxArySize;++cc) {
+					try {
+						if (ary[aa][bb][cc] && !(ary[0][0][0] instanceof Array)) {
+							val=ary[aa][bb][cc];
+							if (val===null || isNaN(val) || val=='') {
+								ary[aa][bb][cc]='';
+							} else {
+								ary[aa][bb][cc]=0;
+							}
+						}
+						for (dd=0;dd<maxArySize;++dd) {
+						try {
+							if (ary[aa][bb][cc][dd] && !(ary[0][0][0][0] instanceof Array)) {
+								val=ary[aa][bb][cc][dd];
+								if (val===null || isNaN(val) || val=='') {
+									ary[aa][bb][cc][dd]='';
+								} else {
+									ary[aa][bb][cc][dd]=0;
+								}
+							}
+							for (ee=0;ee<maxArySize;++ee) {
+							try {
+								if (ary[aa][bb][cc][dd][ee] && !(ary[0][0][0][0][0] instanceof Array)) {
+									val=ary[aa][bb][cc][dd][ee];
+									if (val===null || isNaN(val) || val=='') {
+										ary[aa][bb][cc][dd][ee]='';
+									} else {
+										ary[aa][bb][cc][dd][ee]=0;
+									}
+								}
+								for (ff=0;ff<maxArySize;++ff) {
+								try {
+									if (ary[aa][bb][cc][dd][ee][ff] && !(ary[0][0][0][0][0][0] instanceof Array)) {
+										val=ary[aa][bb][cc][dd][ee][ff];
+										if (val===null || isNaN(val) || val=='') {
+											ary[aa][bb][cc][dd][ee][ff]='';
+										} else {
+											ary[aa][bb][cc][dd][ee][ff]=0;
+										}
+									}
+									for (gg=0;gg<maxArySize;++gg) {
+									try {
+										if (ary[aa][bb][cc][dd][ee][ff][gg] && !(ary[0][0][0][0][0][0][0] instanceof Array)) {
+											val=ary[aa][bb][cc][dd][ee][ff][gg];
+											if (val===null || isNaN(val) || val=='') {
+												ary[aa][bb][cc][dd][ee][ff][gg]='';
+											} else {
+												ary[aa][bb][cc][dd][ee][ff][gg]=0;
+											}
+										}
+										for (hh=0;hh<maxArySize;++hh) {
+										try {
+											if (ary[aa][bb][cc][dd][ee][ff][gg][hh] && !(ary[0][0][0][0][0][0][0][0] instanceof Array)) {
+												val=ary[aa][bb][cc][dd][ee][ff][gg][hh];
+												if (val===null || isNaN(val) || val=='') {
+													ary[aa][bb][cc][dd][ee][ff][gg][hh]='';
+												} else {
+													ary[aa][bb][cc][dd][ee][ff][gg][hh]=0;
+												}
+											}
+											for (ii=0;ii<maxArySize;++ii) {
+											try {
+												if (ary[aa][bb][cc][dd][ee][ff][gg][hh][ii] && !(ary[0][0][0][0][0][0][0][0][0] instanceof Array)) {
+													val=ary[aa][bb][cc][dd][ee][ff][gg][hh][ii];
+													if (val===null || isNaN(val) || val=='') {
+														ary[aa][bb][cc][dd][ee][ff][gg][hh][ii]='';
+													} else {
+														ary[aa][bb][cc][dd][ee][ff][gg][hh][ii]=0;
+													}
+												}
+												for (jj=0;jj<maxArySize;++jj) {
+												try {
+													if (ary[aa][bb][cc][dd][ee][ff][gg][hh][ii] && !(ary[0][0][0][0][0][0][0][0][0][0] instanceof Array)) {
+														val=ary[aa][bb][cc][dd][ee][ff][gg][hh][ii][jj];
+														if (val===null || isNaN(val) || val=='') {
+															ary[aa][bb][cc][dd][ee][ff][gg][hh][ii][jj]='';
+														} else {
+															ary[aa][bb][cc][dd][ee][ff][gg][hh][ii][jj]=0;
+														}
+													}
+												} catch (e) {} //jj
+												}
+											} catch (e) {} //ii
+											}
+										} catch (e) {} //hh
+										}
+									} catch (e) {} //gg
+									}
+								} catch (e) {} //ff
+								}
+							} catch (e) {} //ee
+							}
+						} catch (e) {} //dd
+						}
+					} catch (e) {} //cc
+					}
+				} catch (e) {} //bb
 				}
+			} catch (e) {} //aa
 			}
 		}
-		} catch(_thise) {
-		}
 	}
+	return '';
 } var _Erase=_erase; var _ERASE=_erase;
 
 //vbScript VARTYPE
@@ -1635,16 +1694,6 @@ function SQLExport(db, dbname, callback) {
         }, NSB._sqlError(masterSql));
     });
 
-    try {
-	// are we running in a browser?
-	window;
-    } catch (e) {
-	// if not... temporarily fix the GC problem
-	for (i = 0; i < schema.dml.length; i++) {
-	    alert(schema.dml[i]);
-	}
-    }
-
     return schema;
 }
 
@@ -1855,7 +1904,7 @@ function nsbDOMAttr(obj, strobj) {
     }
 }
 
-function NSB_addDisableProperty(ctrl) {
+NSB.addDisableProperty = function(ctrl) {
     NSB.defineProperty(ctrl, 'disabled', {
 	set: function(n) {
             if (n) {
@@ -1931,6 +1980,7 @@ NSB.msgboxDefaultRtn = function(buttonClicked, inputTxt) {}
 NSB.addProperties = function(ctrl, actualCtrl) {
     actualCtrl = actualCtrl || ctrl;
 	if(actualCtrl.id==undefined){console.log("NSB.addProperties: ctrl is undefined");console.log(ctrl)};
+	if(typeof ctrl.getAttribute == "undefined") return; //for partly formed select_jqm
     var textBoxCtrl = actualCtrl;
     if (ctrl.getAttribute('data-nsb-type') === 'TextBox_jqm' || ctrl.getAttribute('data-nsb-type') === 'Date' || ctrl.getAttribute('data-nsb-type') === 'DateTime' || ctrl.getAttribute('data-nsb-type') === 'Month' || ctrl.getAttribute('data-nsb-type') === 'Time') { textBoxCtrl = ctrl; }
     NSB.defineProperty(ctrl, 'Left', {
@@ -2036,10 +2086,11 @@ NSB.EULA=function(s){
         "<div id='NSB_text' style='padding:10px; background-color:black; color:white; text-shadow:0 0 0; font-family:helvetica; font-size:12px;'>" + s +
         "</div>" +
     "</div>" +
-    "<div onclick='localStorage.EULA=true;NSB.EULA();' style='position:absolute; bottom:0px; left:5%; width:90%; text-align:center;" +  
+    "<div id='NSB_ProgressClose' style='position:absolute; bottom:0px; left:5%; width:90%; text-align:center;" +  
       "text-shadow:0 0 0; margin-bottom:0px; background-color:black; color:white; font-family:helvetica; font-size:18px;" +
       "border:2px solid white;'>"+accept+"</div>";
-  document.body.appendChild(NSB.EULAobj)
+  document.body.appendChild(NSB.EULAobj);
+  NSB_ProgressClose.onclick = function(){localStorage.EULA=true;NSB.EULA();};
   NSB.EULAref=new iScroll('NSB_scroller',{bounce:true, zoom:false})
   setTimeout(function(){NSB.EULAref.refresh()}, 200)
 }
@@ -2057,8 +2108,7 @@ NSB.Print=function(s){
       }
     return
   }
-  if(typeof(NSB.Printobj)!='undefined' && NSB.Printobj != null){
-     NSB_Progress.style.display='block'
+  if(typeof(NSB.Printobj)!='undefined' && NSB.Printobj != null){ 
      if(!s) return;
      if(NSB_text.innerHTML.slice(-4)!="<br>") s="<br>" + s;
      NSB_text.innerHTML=NSB_text.innerHTML + s;
@@ -2078,8 +2128,9 @@ NSB.Print=function(s){
       "<div id='NSB_scroller' style='height:" + (height-5) + "px;'>" +
           "<div id='NSB_text' style='padding:10px; font-family:helvetica; font-size:12px;'>" + s +
       "</div>" +
-      "<div id=\"NSB_ProgressClose\" onclick='NSB_Progress.style.display=\"none\"' class='NSB_ProgressClose'>\u00D7</div>"
-    document.body.appendChild(NSB.Printobj)
+      "<div id='NSB_ProgressClose' class='NSB_ProgressClose'>\u00D7</div>";
+    document.body.appendChild(NSB.Printobj);
+    NSB_ProgressClose.onclick = function(){NSB_Progress.style.display='none'};
     if(typeof(iScroll)!="undefined") {
        NSB.Printref=new iScroll('NSB_scroller',{bounce:true, zoom:false})
        setTimeout(function(){NSB.Printref.refresh()}, 200)
@@ -2233,6 +2284,7 @@ NSB._parseButtons = function(buttons, rtnFunc) {
             }
             var cbuttonObj='';
             for(i=0; i<customButton.length; i++) { cbuttonObj += cbutton[i]; }
+            //window["buttonObj={"+cbuttonObj+"};"];
             eval("buttonObj={"+cbuttonObj+"};");
         }
         return buttonObj;
@@ -2605,4 +2657,9 @@ if (typeof document !== 'undefined') {
     document.ontouchmove = function(e) { e.preventDefault(); };
     /mobile/i.test(navigator.userAgent) && !location.hash && setTimeout(function(){if (!pageYOffset) window.scrollTo(0,0)},500);
     NSB.MsgBoxStyle = (navigator.userAgent.match(/(android)|(Chrome)/i)) ? '-android' : '';
-}
+
+
+document.addEventListener(
+  (document.hidden==undefined) ? "webkitvisibilitychange" : "visibilitychange", 
+  function(){onvisibilitychange(!(document.hidden || document.webkitHidden) )}, False);
+}  
