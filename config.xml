@@ -2,11 +2,11 @@
 <widget 
 xmlns = "http://www.w3.org/ns/widgets"
 xmlns:gap = "http://phonegap.com/ns/1.0"
-id = "com.nsbasic.{id}"
-version = "{version}">
+id = "com.nsbasic.app"
+version = "1.0.0">
 
-<name>{title}</name>
-<description>{description}</description>
+<name>Bartender</name>
+<description></description>
 
 <!-- Icons: Expand this section with sizes required for platforms you are targeting.-->
 <icon src='icons/ios/icon.png' gap:platform='ios' width='57' height='57' />
@@ -28,6 +28,7 @@ version = "{version}">
 
 <!-- sample preference specification -->
 <preference name="autorotate" value="false" readonly="true"/>
-<preference name="orientation" value="portrait"/>
-<preference name="fullscreen" value="true"/>
+<preference name="orientation" value="portrait" />
+<preference name="fullscreen" value="true" />
+<preference name="splash-screen-duration" value="1000"/>
 </widget>
